@@ -1,0 +1,22 @@
+{
+    "Nom*": "Name*",
+    "Prénom*" : "Surname*",
+    "Date de Naissance*": "Birthday*",
+    "Sexe*": "Sex*",
+    "Téléphone*": "Phone number*",
+    "E-mail*": "E-mail*",
+    "Mot de Passe*": "Password*",
+    "Confirmation du mot de Passe*" : "Confirm password*",
+    "j'ai déjà un compte": "I already have an account",
+    "Je me connecte" : "I connect",
+    "M'inscrire": "Register",
+    "Un mot de passe contient au moins une majuscule et un chiffre" : "A password contains at least one capital letter and one number",
+    "La taille maximale d'un mot de passe est de 16 caractéres" : "The maximum size of a password is 16 characters",
+    "La taille minimale est de 8 caractéres": "The minimum size is 8 characters",
+    "Mot de passe incohérent" : "Inconsistent password",
+
+
+    "Hello" : "Bonjour",
+    "how are you": "comment tu vas",
+    "Bonjour les jeunes" :  "Hello young people"
+}
