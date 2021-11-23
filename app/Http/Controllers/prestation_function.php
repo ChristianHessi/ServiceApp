@@ -133,10 +133,12 @@ class prestation_function extends Controller
     */
     public function add_only_prestation(Request $request){
         try{
+            // dd($request->all());
             $custumer_id = $_POST['custumer'];
             $price = $_POST['price'];
             $technician_id = $_POST['technicien'];
-            $services = $request->service;
+            $nb_services = $request->nb_services;
+            $services = [];
             $date_prestation = $_POST['date_prestation'];
             //format de date
             if(session("selected_language") == "en"){
@@ -147,6 +149,10 @@ class prestation_function extends Controller
             }
             $date_prestation = Carbon::createFromFormat($format, $date_prestation)->format("Y-m-d");
 
+            for($i=1; $i <= $nb_services; $i++){
+                $services[] = $request->input("service".$i);
+            }
+            // dd($services);
 
             if(isset($custumer_id)  && isset($price) && isset($technician_id) && isset($services) && isset($date_prestation)){
                 //create code prestation
@@ -156,9 +162,10 @@ class prestation_function extends Controller
                     $current_timestamp = Carbon::now()->timestamp;
                     $code_string = (string)$current_timestamp. "" . (string)Auth::user()->id .(string)$service_id;
                     $code_int = (int)$code_string;
+                    $serv_price = Service::where("id", $service_id)->first()->price;
                     $service = array(
                         "code" => $code_int,
-                        "price" => $price,
+                        "price" => $serv_price,
                         "service_id" => $service_id,
                         "custumer_id" => $custumer_id,
                         "user_id" => $technician_id,

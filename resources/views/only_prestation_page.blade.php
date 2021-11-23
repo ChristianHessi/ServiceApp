@@ -237,7 +237,7 @@
                 var idcustumer = "{{$custumer->id}}";
                 var idcust = Number("{{$custumer->id}}");
 
-                if(ids_custumers.includes(idcust)){ 
+                if(ids_custumers.includes(idcust)){
 
                     table_perso += "<tr> <td>  <em style=\"font-style: italic;\">@lang('lang.custumer_ongl') </em> <b class='col-form-label'> {{strtoupper($custumer->name)}}  {{ucfirst($custumer->surname)}} </b> </td> <td>  </td> <td>  </td> <td> </td> <td>  </td> <td> </td> <td> </td> <td> </td> </tr>";
 
@@ -290,7 +290,7 @@
                 var idservice = "{{$service->id}}";
                 var idserv = Number("{{$service->id}}");
 
-                if(ids_services.includes(idserv)){ 
+                if(ids_services.includes(idserv)){
 
                     table_perso += "<tr> <td>  <em style=\"font-style: italic;\">@lang('lang.service_ongl') </em> <b class='col-form-label'> {{strtoupper($service->name)}}  </b> </td> <td>  </td> <td>  </td> <td> </td> <td>  </td> <td> </td> <td> </td><td> </td> </tr>";
 

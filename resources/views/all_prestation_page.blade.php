@@ -53,7 +53,7 @@
                                                 <input id="date_stop" name="date_stop"  value="{{date(App\Http\Controllers\user_function::date_format_value(), strtotime(<?php echo(date('Y-m-d')) ?>))}}"  style="background-color: white;" class="form-control" required readonly />
                                             @endif
                                     </div>
-                                    <div class="form-group col-xs-4">
+                                    <div class="form-group row col-xs-4">
                                         {{-- <input  value="@lang('lang.recherch')" class="form-control btn btn-sm btn-info" id="search" /> --}}
                                         <button type="button" id="search" class="btn btn-primary">@lang('lang.recherch')</button>
                                         <button type="button" id="export" class="btn btn-primary">@lang('lang.export')</button>

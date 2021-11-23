@@ -52,43 +52,34 @@
                             </div>
                         </div>
 
-                        <div class="item form-group">
+                        <div class="item form-group" id="service-group1" >
                             <label class="col-form-label col-md-3 col-sm-3 label-align">@lang("lang.service")<span class="required"></span>
                             </label>
                             <div class="col-md-8 col-sm-8 ">
-                                <!--<select onchange="getPrice(this)" required class="form-control col-sm-10" name="service">
-                                    <option value="" disabled selected>  </option>
-                                    @foreach ($all_services as $service)
-                                        @if (old('service'))
-                                            @if (old('service') == $service->id)
-                                                <option selected value="{{$service->id}}"> {{$service->name}}</option>
-                                            @else
-                                                <option value="{{$service->id}}"> {{$service->name}}</option>
-                                            @endif
-                                        @else
-                                            <option value="{{$service->id}}"> {{$service->name}} </option>
-                                        @endif
-                                    @endforeach
-                                </select>-->
-                                <select required id="serviceChoice" multiple name="service[]" class="form-control col-sm-10" >
-                                    <option value="" disabled selected>  </option>
-                                    @foreach ($all_services as $service)
-                                        @if (old('service'))
-                                            @if (old('service') == $service->id)
-                                                <option selected value="{{$service->id}}" > {{$service->name}} </option>
-                                            @else
-                                                <option value="{{$service->id}}" >{{$service->name}}</option>
-                                            @endif
-                                        @else
-                                            <option value="{{$service->id}}" > {{$service->name}} </option>
-                                        @endif
-                                    @endforeach
-                                </select>
 
+                                <input list="serviceList1" required id="1serviceChoice" class="form-control inputelmt col-sm-10" placeholder="  "/>
+                                <datalist id="serviceList1">
+                                    <option value="" disabled selected>  </option>
+                                    @foreach ($all_services as $service)
+                                        @if (old('service'))
+                                            @if (old('service') == $service->id)
+                                                <option selected data-value="{{$service->id}}" > {{$service->name}} </option>
+                                            @else
+                                                <option data-value="{{$service->id}}" >{{$service->name}}</option>
+                                            @endif
+                                        @else
+                                            <option data-value="{{$service->id}}" > {{$service->name}} </option>
+                                        @endif
+                                    @endforeach
+                                </datalist>
+                                <input type="hidden" name="service1" id="1serviceChoice-hidden" class="hidden_input">
+                                <a class=" btn btn-info ajouter offset-sm-1" href="#" > <i class="glyphicon glyphicon-plus"></i></a>
                             </div>
                         </div>
 
-                        <div class="item form-group">
+                        <input type="hidden" name="nb_services" id="nb_services" value=1>
+
+                        <div class="item form-group" id="technicien_container">
                             <label class="col-form-label col-md-3 col-sm-3 label-align">@lang("lang.technicien")<span class="required"></span>
                             </label>
                             <div class="col-md-8 col-sm-8 ">
@@ -163,75 +154,8 @@
 
     <script>
     $(function(){
-
-        $("#serviceChoice").change(function (){
-            var selected = $('#serviceChoice').val()
-
-            console.log(selected);
-            price = 0
-            @foreach ($all_services as $service)
-                var idserv = "{{$service->id}}";
-                // var idserv = "{{$service->name}}";
-                var priceserv = "{{$service->price}}";
-
-                for(id of selected){
-                    (id == idserv) ? price = price + parseInt(priceserv) : ""
-                }
-                console.log(price)
-                $("#price").val(price)
-                // document.getElementById("price").value = price;
-            @endforeach
-        })
-
-        function DoSubmit(){
-            var val = $('#serviceChoice').val();
-            var idservice = $('#serviceList option').filter(function() {
-                return this.value == val;
-            }).data('value');
-
-            var val_custumer = $('#custumerChoice').val();
-            var idcustumer = $('#custumerList option').filter(function() {
-                return this.value == val_custumer;
-            }).data('value');
-
-             var val_technicien = $('#technicienChoice').val();
-            var idtechnicien = $('#technicienList option').filter(function() {
-                return this.value == val_technicien;
-            }).data('value');
-
-            //alert(idcustumer);
-            //alert(idtechnicien);
-
-
-
-          document.myform.service.value = idservice.toString();
-          document.myform.custumer.value = idcustumer.toString();
-          document.myform.technicien.value = idtechnicien.toString();
-          document.getElementById("myform").submit();
-        }
-
-        // document.querySelector('input[list]').addEventListener('input', function(e) {
-        //     var input = e.target,
-        //         list = input.getAttribute('list'),
-        //         options = document.querySelectorAll('#' + list + ' option'),
-        //         hiddenInput = document.getElementById(input.getAttribute('id') + '-hidden'),
-        //         inputValue = input.value;
-
-
-        //     hiddenInput.value = inputValue;
-
-        //     for(var i = 0; i < options.length; i++) {
-        //         var option = options[i];
-
-        //         if($.trim(options[i].innerText) === inputValue) {
-        //             hiddenInput.value = option.getAttribute('data-value');
-        //             break;
-        //         }
-        //     }
-
-        // })  ;
-
-        $("input[list]").change(function(e) {
+        function datalist_value_load(e){
+            //chargement des données du datalist dans le hidden input qu'on va soumettre au controlleur
             var input = e.target,
                 list = input.getAttribute('list'),
                 options = document.querySelectorAll('#' + list + ' option'),
@@ -249,8 +173,60 @@
                     break;
                 }
             }
+        }
 
-        });
+        function change_on_select(e) {
+            console.log("in");
+            datalist_value_load(e);
+            // chargement du prix total du service
+            var selected = [];
+            price = 0
+
+            setTimeout(() => {
+                nb_services = document.getElementById("nb_services").value
+                for(j=1; j <= nb_services; j++){
+                    selected.push($("#"+j+"serviceChoice-hidden").val())
+                }
+
+                @foreach ($all_services as $service)
+                    var idserv = "{{$service->id}}";
+                    var priceserv = "{{$service->price}}";
+
+                    for(id of selected){
+                        (id == idserv) ? price = price + parseInt(priceserv) : ""
+                    }
+                    $("#price").val(price);
+                @endforeach
+            }, 100);
+        }
+
+        $("#technicienChoice").on("change", datalist_value_load)
+        $("#custumerChoice").on("change", datalist_value_load)
+        // ajout de nouveaux services
+
+        $("#1serviceChoice").on("change", change_on_select);
+        var elem = $('#service-group1').clone();
+        var i = 1;
+        $('.ajouter').click(function(e){
+            console.log("premier",i);
+            e.preventDefault();
+            var clone = elem;
+            i++;
+            console.log("suivant",i);
+            clone.attr('id','service-group' + i);
+            clone.find('.inputelmt').attr('list', 'serviceList'+1).val('');
+            clone.find('.inputelmt').attr('id', i+'serviceChoice').val('');
+            clone.find('.inputelmt').attr('list', 'serviceList'+i).val('');
+            clone.find('a').remove();
+            clone.find('datalist').attr('id', 'serviceList'+i).val('');
+            clone.find('.hidden_input').attr('name', 'service'+i).val('');
+            clone.find('.hidden_input').attr('id', i+'serviceChoice-hidden').val('');
+
+            clone.insertBefore('#technicien_container')
+            $("#"+ i +"serviceChoice").on("change", change_on_select);
+            elem = clone.clone()
+            $("#nb_services").val(i)
+        })
 
     });
     </script>
