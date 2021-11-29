@@ -12,6 +12,7 @@ use  App\Models\User;
 use App\Models\Client;
 use App\Http\Controllers\prestation_controller;
 use Carbon\Carbon;
+use GrahamCampbell\ResultType\Result;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
 use Maatwebsite\Excel\Facades\Excel;
@@ -175,9 +176,7 @@ class prestation_function extends Controller
 
                     $registre = new prestation_controller;
                     $result = $registre->save_prestation($service);
-
                 }
-
 
                 if($result){
                     return redirect()->route('only_prestations')->with('success', Lang::get('lang.create_prestation'));

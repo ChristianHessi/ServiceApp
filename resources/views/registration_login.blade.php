@@ -5,7 +5,7 @@
 
     <div class="shadow-lg bg-white login p-5">
         <a class="flex items-center justify-center" style="margin-bottom: 25px;" href="{{route('login')}}">
-            <img src="{{asset('spectra.jpg')}}" >
+            <img src="{{asset('spectra.JPG')}}" >
         </a>
 
         <form action="{{route('login_account')}}" method="post" class="form-group" autocomplete="off">
