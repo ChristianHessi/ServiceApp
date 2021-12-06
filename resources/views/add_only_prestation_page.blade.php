@@ -169,6 +169,7 @@
                 var option = options[i];
 
                 if($.trim(options[i].innerText) === inputValue) {
+                    console.log(option.getAttribute('data-value'));
                     hiddenInput.value = option.getAttribute('data-value');
                     break;
                 }
