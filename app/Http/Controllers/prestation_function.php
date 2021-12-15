@@ -158,24 +158,42 @@ class prestation_function extends Controller
             if(isset($custumer_id)  && isset($price) && isset($technician_id) && isset($services) && isset($date_prestation)){
                 //create code prestation
 
-
-                foreach($services as $service_id){
+                if(count($services) == 1){
                     $current_timestamp = Carbon::now()->timestamp;
-                    $code_string = (string)$current_timestamp. "" . (string)Auth::user()->id .(string)$service_id;
+                    $code_string = (string)$current_timestamp. "" . (string)Auth::user()->id .(string)$services[0];
                     $code_int = (int)$code_string;
-                    $serv_price = Service::where("id", $service_id)->first()->price;
+                    $serv_price = Service::where("id", $services[0])->first()->price;
                     $service = array(
                         "code" => $code_int,
-                        "price" => $serv_price,
-                        "service_id" => $service_id,
+                        "price" => $price,
+                        "service_id" => $services[0],
                         "custumer_id" => $custumer_id,
                         "user_id" => $technician_id,
                         "date_prestation" => $date_prestation,
                     );
 
-
                     $registre = new prestation_controller;
                     $result = $registre->save_prestation($service);
+                }
+                else{
+                    foreach($services as $service_id){
+                        $current_timestamp = Carbon::now()->timestamp;
+                        $code_string = (string)$current_timestamp. "" . (string)Auth::user()->id .(string)$service_id;
+                        $code_int = (int)$code_string;
+                        $serv_price = Service::where("id", $service_id)->first()->price;
+                        $service = array(
+                            "code" => $code_int,
+                            "price" => $serv_price,
+                            "service_id" => $service_id,
+                            "custumer_id" => $custumer_id,
+                            "user_id" => $technician_id,
+                            "date_prestation" => $date_prestation,
+                        );
+
+
+                        $registre = new prestation_controller;
+                        $result = $registre->save_prestation($service);
+                    }
                 }
 
                 if($result){
